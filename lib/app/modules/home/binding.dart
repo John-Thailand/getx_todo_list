@@ -6,12 +6,12 @@ import 'package:getx_todo_list/app/modules/home/controller.dart';
 class HomeBinding implements Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(() {
+    Get.lazyPut(
       () => HomeController(
-            taskRepository: TaskRepository(
-              taskProvider: TaskProvider(),
-            ),
-          );
-    });
+        taskRepository: TaskRepository(
+          taskProvider: TaskProvider(),
+        ),
+      ),
+    );
   }
 }

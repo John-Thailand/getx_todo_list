@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:getx_todo_list/app/data/models/task.dart';
 import 'package:getx_todo_list/app/modules/home/controller.dart';
 import 'package:getx_todo_list/app/core/utils/extensions.dart';
+import 'package:getx_todo_list/app/modules/home/widgets/add_card.dart';
+import 'package:getx_todo_list/app/modules/home/widgets/task_card.dart';
 
 class HomePage extends GetView<HomeController> {
   const HomePage({Key? key}) : super(key: key);
@@ -20,6 +23,19 @@ class HomePage extends GetView<HomeController> {
                   fontSize: 24.0.sp,
                   fontWeight: FontWeight.bold,
                 ),
+              ),
+            ),
+            Obx(
+              () => GridView.count(
+                crossAxisCount: 2,
+                shrinkWrap: true,
+                physics: const ClampingScrollPhysics(),
+                children: [
+                  ...controller.tasks
+                      .map((element) => TaskCard(task: element))
+                      .toList(),
+                  AddCard(),
+                ],
               ),
             ),
           ],

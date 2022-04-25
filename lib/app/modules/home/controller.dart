@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:getx_todo_list/app/data/models/task.dart';
 import 'package:getx_todo_list/app/data/services/storage/repository.dart';
@@ -5,7 +6,9 @@ import 'package:getx_todo_list/app/data/services/storage/repository.dart';
 class HomeController extends GetxController {
   TaskRepository taskRepository;
   HomeController({required this.taskRepository});
-
+  final formKey = GlobalKey<FormState>();
+  final editCtrl = TextEditingController();
+  final chipIndex = 0.obs;
   final tasks = <Task>[].obs;
 
   @override
@@ -20,5 +23,20 @@ class HomeController extends GetxController {
   @override
   void onClose() {
     super.onClose();
+  }
+
+  void changeChipIndex(int value) {
+    chipIndex.value = value;
+  }
+
+  bool addTask(Task task) {
+    // TaskクラスはEquatableクラスを継承している
+    // propsメソッドにプロパティ（title, icon, color）を設定する
+    // これらのプロパティが全て同じである場合、containsがtrueになる
+    if (tasks.contains(task)) {
+      return false;
+    }
+    tasks.add(task);
+    return true;
   }
 }
