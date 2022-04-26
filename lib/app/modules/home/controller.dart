@@ -9,7 +9,9 @@ class HomeController extends GetxController {
   final formKey = GlobalKey<FormState>();
   final editCtrl = TextEditingController();
   final chipIndex = 0.obs;
+  final deleting = false.obs;
   final tasks = <Task>[].obs;
+  final task = Rx<Task?>(null);
 
   @override
   void onInit() {
@@ -22,11 +24,20 @@ class HomeController extends GetxController {
 
   @override
   void onClose() {
+    editCtrl.dispose();
     super.onClose();
   }
 
   void changeChipIndex(int value) {
     chipIndex.value = value;
+  }
+
+  void changeDeleting(bool value) {
+    deleting.value = value;
+  }
+
+  void changeTask(Task? select) {
+    task.value = select;
   }
 
   bool addTask(Task task) {
@@ -38,5 +49,34 @@ class HomeController extends GetxController {
     }
     tasks.add(task);
     return true;
+  }
+
+  void deleteTask(Task task) {
+    tasks.remove(task);
+  }
+
+  updateTask(Task task, String title) {
+    var todos = task.todos ?? [];
+    if (containTodo(todos, title)) {
+      return false;
+    }
+    // TODOリストに新たなTODOを追加
+    var todo = {'title': title, 'done': false};
+    todos.add(todo);
+    // 新たなタスクを設定し、そのタスクが入っている要素を上書きする
+    var newTask = task.copyWith(todos: todos);
+    int oldIdx = tasks.indexOf(task);
+    tasks[oldIdx] = newTask;
+    // カスタムタイプのRxを使用してUIを参照する場合に、[value]を直接更新してStreamに追加すると便利です。
+    // final person = Person(name: 'John', last: 'Doe', age: 18).obs;
+    // person.value.name = 'Roi';
+    // person.refresh();
+    // print(person);
+    tasks.refresh();
+    return true;
+  }
+
+  bool containTodo(List todos, String title) {
+    return todos.any((element) => element['title'] == title);
   }
 }
