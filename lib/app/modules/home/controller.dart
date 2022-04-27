@@ -134,4 +134,47 @@ class HomeController extends GetxController {
     doingTodos.refresh();
     doneTodos.refresh();
   }
+
+  void deleteDoneTodo(dynamic doneTodo) {
+    int index = doneTodos
+        .indexWhere((element) => mapEquals<String, dynamic>(doneTodo, element));
+    doneTodos.removeAt(index);
+    // class User {
+    //   String name, last;
+    //   int age;
+    //   User({this.name, this.last, this.age});
+
+    //   @override
+    //   String toString() => '$name $last, $age years old';
+    // }
+
+    // final user = User(name: 'John', last: 'Doe', age: 33).obs;
+
+    // `user` 自体はリアクティブですが、その中のプロパティはリアクティブではありません。
+    // そのため、このようにプロパティの値を変更してもWidgetは更新されません。
+    // user.value.name = 'Roi';
+    // `Rx` には自ら変更を検知する手段がないからです。
+    // そのため、カスタムクラスの場合はこのようにWidgetに変更を知らせる必要があります。
+    // user.refresh();
+
+    // もしくは `update()` メソッドを使用してください。
+    // user.update((value){
+    //   value.name='Roi';
+    // });
+    doneTodos.refresh();
+  }
+
+  bool isTodosEmpty(Task task) {
+    return task.todos == null || task.todos!.isEmpty;
+  }
+
+  int getDoneTodo(Task task) {
+    var res = 0;
+    for (int i = 0; i < task.todos!.length; i++) {
+      if (task.todos![i]['done'] == true) {
+        res += 1;
+      }
+    }
+    return res;
+  }
 }
