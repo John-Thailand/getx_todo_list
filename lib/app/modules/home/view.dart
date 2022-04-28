@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:getx_todo_list/app/data/models/task.dart';
 import 'package:getx_todo_list/app/modules/home/controller.dart';
 import 'package:getx_todo_list/app/core/utils/extensions.dart';
